@@ -5,40 +5,40 @@ import random
 app = Flask(__name__)
 CORS(app)
 
-# MVP Data for California
-CALIFORNIA_FIRE = {
+# MVP Data for Kazakhstan (e.g., Burabay or East Kazakhstan forests)
+KAZAKHSTAN_FIRE = {
     "id": 1,
-    "lat": 37.7749,
-    "lon": -122.4194,
-    "intensity": "High",
-    "status": "Active",
+    "lat": 53.0833,
+    "lon": 70.3000,
+    "intensity": "Жоғары",
+    "status": "Белсенді",
     "detected_by": "AI Orbit Satellite-V1"
 }
 
 @app.route('/fires')
 def get_fires():
-    return jsonify([CALIFORNIA_FIRE])
+    return jsonify([KAZAKHSTAN_FIRE])
 
 @app.route('/prediction')
 def get_prediction():
     # Simple logic for MVP: spread North-East
     return jsonify({
         "fire_id": 1,
-        "direction": "North-East",
+        "direction": "Солтүстік-Шығыс",
         "spread_zone": [
-            [37.7749, -122.4194],
-            [37.8000, -122.3800],
-            [37.8500, -122.3500]
+            [53.0833, 70.3000],
+            [53.1500, 70.4500],
+            [53.2500, 70.6000]
         ],
-        "timeframe": "6-12h",
-        "risk_level": "High"
+        "timeframe": "6-12 сағат",
+        "risk_level": "Жоғары"
     })
 
 @app.route('/damage')
 def get_damage():
     # Formula: area * factor (simulated)
-    area_sq_km = random.uniform(50, 150)
-    damage_usd = area_sq_km * 25000 # $25k per sq km
+    area_sq_km = random.uniform(20, 80)
+    damage_usd = area_sq_km * 15000 # $15k per sq km
     return jsonify({
         "estimated_damage_usd": round(damage_usd, 2),
         "area_affected_km2": round(area_sq_km, 2),
