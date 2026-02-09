@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle } from 'react-leaflet';
-import { Flame, TrendingUp, DollarSign, ShieldAlert } from 'lucide-react';
+import { Flame, TrendingUp, DollarSign, ShieldAlert, Trees } from 'lucide-react';
 import L from 'leaflet';
 
-// Fix Leaflet icon issue
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-marker-icon.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
@@ -37,7 +36,6 @@ function App() {
       </header>
 
       <main className="flex-1 flex overflow-hidden">
-        {/* Sidebar Dashboard */}
         <div className="w-80 p-4 border-r border-slate-700 bg-slate-800 overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4 border-b border-slate-600 pb-2">Белсенді мониторинг</h2>
           
@@ -48,6 +46,16 @@ function App() {
               </div>
               <div className="text-3xl font-bold">{fires.length}</div>
               <div className="text-xs text-orange-400 mt-1">AI Orbit спутнигі арқылы анықталды</div>
+            </div>
+
+            <div className="bg-slate-700 p-4 rounded-lg border-l-4 border-emerald-500">
+              <div className="text-slate-400 text-sm flex items-center gap-1">
+                <Trees size={14} /> АҒАШ ТҮРІ
+              </div>
+              <div className="text-lg font-bold text-emerald-400">
+                {fires[0]?.tree_type || 'Анықталуда...'}
+              </div>
+              <div className="text-xs text-slate-300">Тығыздығы: {fires[0]?.tree_density || '...'}</div>
             </div>
 
             <div className="bg-slate-700 p-4 rounded-lg">
@@ -71,11 +79,10 @@ function App() {
 
           <div className="mt-8 text-xs text-slate-500 bg-slate-900 p-3 rounded">
             <p className="font-bold mb-1">AI ТАЛДАУ:</p>
-            "Спутниктік деректер Қазақстанның солтүстік ормандарында құрғақ шөптің көптігін көрсетеді. Жел жылдамдығы өрттің тез таралуына қолайлы."
+            "AI спектралды талдауы жанып жатқан аймақтың негізінен қылқан жапырақты ормандар екенін растады. Бұл өрттің таралу жылдамдығын арттырады."
           </div>
         </div>
 
-        {/* Map Container */}
         <div className="flex-1 relative">
           <MapContainer center={[48.0196, 66.9237]} zoom={5} style={{ height: '100%', width: '100%' }}>
             <TileLayer
@@ -88,6 +95,7 @@ function App() {
                   <Popup>
                     <div className="text-slate-900">
                       <p className="font-bold">Өрт ID: #{fire.id}</p>
+                      <p>Ағаш түрі: <span className="text-emerald-700">{fire.tree_type}</span></p>
                       <p>Қарқындылығы: {fire.intensity}</p>
                       <p className="text-red-600 font-semibold">AI арқылы анықталды</p>
                     </div>
@@ -103,15 +111,6 @@ function App() {
               />
             )}
           </MapContainer>
-          
-          <div className="absolute bottom-4 right-4 bg-slate-800 p-2 rounded shadow-lg z-[1000] border border-slate-600 text-xs text-white">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div> <span>Анықталған өрт</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-1 border-t-2 border-dashed border-orange-500"></div> <span>Болжамды таралу (12 сағ)</span>
-            </div>
-          </div>
         </div>
       </main>
     </div>

@@ -5,14 +5,17 @@ import random
 app = Flask(__name__)
 CORS(app)
 
-# MVP Data for Kazakhstan (e.g., Burabay or East Kazakhstan forests)
+# MVP Data for Kazakhstan
+# Добавляем тип леса (tree_type)
 KAZAKHSTAN_FIRE = {
     "id": 1,
     "lat": 53.0833,
     "lon": 70.3000,
     "intensity": "Жоғары",
     "status": "Белсенді",
-    "detected_by": "AI Orbit Satellite-V1"
+    "detected_by": "AI Orbit Satellite-V1",
+    "tree_type": "Қарағай (Pine)", # Тип дерева
+    "tree_density": "Жоғары"
 }
 
 @app.route('/fires')
@@ -21,7 +24,6 @@ def get_fires():
 
 @app.route('/prediction')
 def get_prediction():
-    # Simple logic for MVP: spread North-East
     return jsonify({
         "fire_id": 1,
         "direction": "Солтүстік-Шығыс",
@@ -36,9 +38,8 @@ def get_prediction():
 
 @app.route('/damage')
 def get_damage():
-    # Formula: area * factor (simulated)
     area_sq_km = random.uniform(20, 80)
-    damage_usd = area_sq_km * 15000 # $15k per sq km
+    damage_usd = area_sq_km * 15000
     return jsonify({
         "estimated_damage_usd": round(damage_usd, 2),
         "area_affected_km2": round(area_sq_km, 2),
