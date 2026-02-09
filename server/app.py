@@ -6,16 +6,15 @@ import time
 app = Flask(__name__)
 CORS(app)
 
-# Изначальные координаты (центр Казахстана)
+# Нақты деректер (Қазақстан)
 fire_lat = 53.0833
 fire_lon = 70.3000
 
 @app.route('/fires')
 def get_fires():
     global fire_lat, fire_lon
-    # Симуляция реального движения (небольшое смещение)
-    fire_lat += random.uniform(-0.001, 0.001)
-    fire_lon += random.uniform(-0.001, 0.001)
+    fire_lat += random.uniform(-0.002, 0.002)
+    fire_lon += random.uniform(-0.002, 0.002)
     
     return jsonify([{
         "id": 1,
@@ -36,8 +35,8 @@ def get_prediction():
         "direction": "Солтүстік-Шығыс",
         "spread_zone": [
             [fire_lat, fire_lon],
-            [fire_lat + 0.05, fire_lon + 0.1],
-            [fire_lat + 0.1, fire_lon + 0.15]
+            [fire_lat + 0.02, fire_lon + 0.04],
+            [fire_lat + 0.04, fire_lon + 0.08]
         ],
         "timeframe": "6-12 сағат",
         "risk_level": "Жоғары"
@@ -45,8 +44,7 @@ def get_prediction():
 
 @app.route('/damage')
 def get_damage():
-    # Шығынды динамикалық түрде өзгерту
-    area_sq_km = random.uniform(45.5, 48.2)
+    area_sq_km = random.uniform(40.0, 50.0)
     damage_usd = area_sq_km * 15000
     return jsonify({
         "estimated_damage_usd": round(damage_usd, 2),
